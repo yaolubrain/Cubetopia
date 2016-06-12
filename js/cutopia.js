@@ -12,6 +12,9 @@ var frameNum = 0;
 
 var startTime;
 
+var WIDTH = window.innerWidth;
+var HEIGHT = window.innerHeight;
+
 init();
 var audio = new Audio('cpu_mood_cut.mp3');
 audio.play();
@@ -212,7 +215,6 @@ function shock() {
         }       
 
         shock_dist -= 0.1;
-
     }    
 }
 
@@ -314,6 +316,54 @@ function expand(r) {
 }
 
 
+function addText() {
+
+    var text2 = document.createElement('div');
+    text2.style.position = 'absolute';
+    //text2.style.zIndex = 1;    // if you still don't see the label, try uncommenting this
+    text2.style.width = 500 + 'px';
+    text2.style.height = 500 + 'px';
+    text2.style.fontSize = 30;    
+    text2.style.textAlign = 'center';    
+    text2.style.backgroundColor = "rgba(255,0,0,0.5);";
+    text2.innerHTML = "by";
+    text2.style.top = 270 + 'px';
+    text2.style.left = 430 + 'px';
+
+    var text1 = document.createElement('div');
+    text1.style.position = 'absolute';
+    //text2.style.zIndex = 1;    // if you still don't see the label, try uncommenting this
+    text1.style.width = 500 + 'px';
+    text1.style.height = 500 + 'px';
+    text1.style.fontSize = 50;    
+    text1.style.face = 'Courier';
+    text1.style.textAlign = 'center';    
+    text1.style.backgroundColor = "rgba(255,0,0,0.5);";
+    text1.innerHTML = "Cutopia";
+    text1.style.top = 200 + 'px';
+    text1.style.left = 430 + 'px';
+
+    var text3 = document.createElement('div');
+    text3.style.position = 'absolute';
+    //text2.style.zIndex = 1;    // if you still don't see the label, try uncommenting this
+    text3.style.width = 500 + 'px';
+    text3.style.height = 500 + 'px';
+    text3.style.fontSize = 30;    
+    text3.style.textAlign = 'center';    
+    text3.style.backgroundColor = "rgba(255,0,0,0.5);";
+    text3.innerHTML = "yaolubrain";
+    text3.style.top = 310 + 'px';
+    text3.style.left = 430 + 'px';
+
+
+    document.body.appendChild(text1);
+    document.body.appendChild(text2);
+    document.body.appendChild(text3);
+}
+
+
+
+
 
 function cameraOrigin() {
     camera.position.x += (radius - camera.position.x) *0.05;
@@ -322,7 +372,7 @@ function cameraOrigin() {
 }
 
 
-var R =    1;
+var R = 1;
 var sec = 0;
 var shock_dist = 0;
 var shock_direct = 0;
@@ -330,6 +380,8 @@ var shock_direct = 0;
 function animate() {
     
     ++frameNum;
+
+    
   
     sec = (Date.now() - startTime) / 1000.0;
 
@@ -347,7 +399,7 @@ function animate() {
         expandingY();
     } else if (sec < 25 * R) {
         rotateCameraZ();
-    } else if (sec < 33 * R) {
+    } else if (sec < 32 * R) {
         shock();
         camera.position.y -= 0.05;
     } else if (sec < 45 * R) {
@@ -359,16 +411,27 @@ function animate() {
     } else if (sec < 55 * R) {
         rotateGroup();
         rotateCameraZ();
-    } else if (sec < 65 * R) {
-        diverge();        
+    } else if (sec < 60 * R) {
+        diverge();     
         rotateCameraZ();
-    } else if (sec < 75 * R) {    
-        expand(1.01);    
-    } else if (sec < 88 * R) {    
+    } else if (sec < 65 * R) {
+        diverge();     
+        expand(1.02);            
+        rotateCameraZ();
+    } else if (sec < 70 * R) {
+        diverge();     
+        expand(0.98);            
+        rotateCameraZ();
+    } else if (sec < 80 * R) {    
+        expand(1.01);   
+        rotateCameraZ(); 
+    } else if (sec < 89 * R) {    
         expand(0.99);    
-    } else if (sec >= 90 * R) {
+    } else if (sec < 95 * R) {
         expand(1.2);
         cameraOrigin();        
+    } else if (sec < 98 * R) {
+        addText();
     }
 
     requestAnimationFrame( animate );
@@ -376,13 +439,12 @@ function animate() {
     renderer.clear();              
 
     for (var i = 0; i < 6; i++) {
-        if (i < 30) {
-
-            renderer.render( scenes[i], camera );    
-            renderer.clearDepth();              
-        } 
+        renderer.render( scenes[i], camera );    
+        renderer.clearDepth();              
     };
 
     camera.lookAt(new THREE.Vector3( 0, 0, 0 ));   
+
     
 }
+    
